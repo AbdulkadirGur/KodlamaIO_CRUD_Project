@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using DataAccess.Abstracts;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +8,40 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Conctretes
 {
-    public  class CategoryDal
+    public class CategoryDal : ICategoryDal
     {
-        List<Category> catagorys;
-        public CategoryDal() 
+        List<Category> _categories;
+
+        public CategoryDal()
         {
-            Category catagory1 = new Category();
-            catagory1.Name = "Tümü";
-            catagory1.Id = 3;
+            _categories = new List<Category>();
+        }
+        
 
-            Category catagory2 = new Category();
-            catagory2.Name = "Programlama";
-            catagory2.Id = 4;
-
-            catagorys = new List<Category>() { catagory1 ,catagory2};
+        public void Add(Category category)
+        {
+            _categories.Add(category);
         }
 
+        public void Delete(Category category)
+        {
+            _categories.Remove(category);
+        }
+
+        public List<Category> GetAll()
+        {
+            return _categories;
+
+        }
+
+        public void Update(Category category)
+        {
+            Category existCategory = _categories.Find(x => x.Id == category.Id);
+            if (existCategory is null)
+                return;
+            existCategory.CategoryName = category.CategoryName;
+
+
+        }
     }
 }

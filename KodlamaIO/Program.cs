@@ -1,13 +1,66 @@
-﻿using Entities.Concrete;
+﻿using Business.Conctretes;
+using DataAccess.Abstracts;
+using DataAccess.Conctretes;
+using Entities.Concrete;
 
-public class Program
+Category category1 = new Category();
+category1.Id = 1;
+category1.CategoryName = "Tümü";
+
+Category category2 = new Category();
+category2.Id = 2;
+category2.CategoryName = "Programlama";
+
+
+CategoryManager categoryManager = new(new CategoryDal());
+categoryManager.Add(category1);
+categoryManager.Add(category2);
+categoryManager.Delete(category2);
+
+
+List<Category> categoryList = categoryManager.GetAll();
+
+foreach (var category in categoryList)
 {
-    private static void Main(string[] args)
-    {
-        
-
-             
-        
-        
-    }
+    Console.WriteLine(category.CategoryName);
 }
+Course course1 = new Course();
+course1.Description = "(.NET)";
+course1.ProgressBar = 1;
+course1.Id = 1;
+course1.CategoryId = 1;
+course1.CourseImage = "course.png";
+course1.CourseName = "Senior Yazılım Geliştirici Yetiştirme Kampı (.NET)";
+course1.CoursePrice = 0;
+
+Course updatecourse1 = new Course();
+updatecourse1.Description = "(C#)";
+updatecourse1.ProgressBar = 1;
+updatecourse1.Id = 1;
+updatecourse1.CategoryId = 1;
+updatecourse1.CourseImage = "course.png";
+updatecourse1.CourseName = "2024 Yazılım Geliştirici Yetiştirme Kampı (C#)";
+updatecourse1.CoursePrice = 0;
+
+CourseManager courseManager = new CourseManager(new CourseDal());
+
+courseManager.Add(course1);
+
+
+List<Course> courseList = courseManager.GetAll();
+
+foreach (var course in courseList)
+{
+    Console.WriteLine(course.Description);
+}
+
+courseManager.Update(updatecourse1);
+
+foreach (var course in courseList)
+{
+    Console.WriteLine(course.Description);
+}
+
+
+
+

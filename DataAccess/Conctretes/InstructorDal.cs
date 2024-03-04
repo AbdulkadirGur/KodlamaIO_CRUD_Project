@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using DataAccess.Abstracts;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +8,37 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Conctretes
 {
-    public class InstructorDal
+    public class InstructorDal:IInstructorDal
     {
-        List<Instructor> instructors;
-
+        List<Instructor> _instructors;
         public InstructorDal()
         {
-            Instructor instructor1 = new Instructor();
-            instructor1.Id = 5;
-            instructor1.Name = "Engin Demirog";
+            _instructors = new List<Instructor>();
+        }
+        public void Add(Instructor instructor)
+        {
+            _instructors.Add(instructor);
+        }
 
-            Instructor instructor2 = new Instructor();
-            instructor2.Id = 6;
-            instructor2.Name = "Abdulkadir Gur";
+        public void Delete(Instructor instructor)
+        {
+            _instructors.Remove(instructor);
+        }
 
-            instructors = new List<Instructor>() { instructor1,instructor2};
+        public List<Instructor> GetAll()
+        {
+            return _instructors;
+        }
+
+        public void Update(Instructor instructor)
+        {
+            Instructor existInstructor = _instructors.Find(x => x.Id == instructor.Id);
+            if (existInstructor is null)
+                return;
+            existInstructor.FirstName = instructor.FirstName;
+            existInstructor.LastName = instructor.LastName;
+            existInstructor.Image = instructor.Image;
+            existInstructor.InstructorCv = instructor.InstructorCv;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using DataAccess.Abstracts;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,26 +8,41 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Conctretes
 {
-    public class CourseDal
+    public class CourseDal:ICourseDal
     {
-        List<Course> courses;
+        List<Course> _courses;
         public CourseDal()
         {
-            Course course1 = new Course();
-            course1.Id = 1;
-            course1.Name = "Senior Yazılım Geliştirici Yetiştirme Kampı (.NET)";
-            course1.Description = "Senior Yazılım Geliştirici Yetiştirme Kampımızın takip, döküman ve duyurularını buradan yapacağız.";
-            course1.Author = "Engin Demirog";
-            course1.Price = 0;
+            _courses = new List<Course>();
+        }
 
-            Course course2 = new Course();
-            course2.Id = 2;
-            course2.Name = "2024 Yazılım Geliştirici Yetiştirme Kampı (C#)";
-            course2.Description = "";
-            course2.Author = "Abdulkadir Gur";
-            course2.Price = 10;
+        public void Add(Course course)
+        {
+            _courses.Add(course);
+        }
 
-            courses= new List<Course>() { course1,course2};
+        public void Delete(Course course)
+        {
+            _courses.Remove(course);
+        }
+
+        public List<Course> GetAll()
+        {
+            return _courses;
+        }
+
+        public void Update(Course course)
+        {
+            Course existCourse = _courses.Find(x => x.Id == course.Id);
+            if (existCourse is null)
+                return;
+            existCourse.CoursePrice = course.CoursePrice;
+            existCourse.CourseName = course.CourseName;
+            existCourse.ProgressBar = course.ProgressBar;
+            existCourse.Description = course.Description;
+            existCourse.CategoryId = course.CategoryId;
+            existCourse.InstructorId = course.InstructorId;
+            existCourse.CourseImage = course.CourseImage;
         }
     }
 }
